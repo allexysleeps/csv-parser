@@ -6,20 +6,41 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+interface Transformer {
+  String transformLine(String line);
+}
+
 interface Reader {
-  public List<String> readFile(String path);
+  List<String> readFile();
+  void setTransformer(Transformer transform);
 }
 
 class CsvReader implements Reader {
-  public List<String> readFile (String path) {
+  private class IdentityTransformer implements Transformer {
+    public String transformLine(String line) {
+      return line;
+    }
+  }
+
+  private String filePath;
+  private Transformer transformer = new IdentityTransformer();
+
+  public CsvReader(String path) {
+    this.filePath = path;
+  }
+
+  public void setTransformer(Transformer transformer) {
+    this.transformer = transformer;
+  }
+
+  public List<String> readFile () {
     LinkedList<String> list = new LinkedList<>();
     BufferedReader reader;
     try {
-      reader = new BufferedReader(new FileReader(path));
-      int k = 0;
+      reader = new BufferedReader(new FileReader(this.filePath));
       String line = reader.readLine();
       while (line != null) {
-        list.add(line);
+        list.add(this.transformer.transformLine(line));
         line = reader.readLine();
       }
     } catch (IOException e) {
