@@ -1,14 +1,14 @@
-package FileParser;
+package FileParser.Transformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.IntStream;
 
-class TransformerFilterFields implements Transformer {
-  private List <Integer> droppedFields;
+public class TransformerDropFields implements Transformer {
+  private List<Integer> droppedFields;
 
-  public TransformerFilterFields(List<Integer> droppedFields) {
+  public TransformerDropFields(List<Integer> droppedFields) {
     this.droppedFields = droppedFields;
   }
 

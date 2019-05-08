@@ -1,38 +1,22 @@
 package FileParser;
 
+import FileParser.Transformer.Transformer;
+import FileParser.Transformer.TransformerDropFields;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import FileParser.Reader.Reader;
+import FileParser.Reader.ReaderCSV;
+
 import java.util.Arrays;
-import java.util.List;
 
 @RestController
 public class Controllers {
   @RequestMapping(method = RequestMethod.GET, value = "/csv")
-  public void getCSV(final HttpServletResponse response) {
-    try {
-      response.setContentType("application/csv");
-      ServletOutputStream outStream = response.getOutputStream();
-
-      TransformerFilterFields filterCols = new TransformerFilterFields(Arrays.asList(1, 2));
-
-      Reader reader = new CsvReader("./files/sample-small.csv");
-      reader.setTransformer(filterCols);
-
-      List <String> lines = reader.readFile();
-
-      lines.forEach((l) -> {
-        try {
-          outStream.print(l + "\n");
-        } catch (IOException err) {
-          err.printStackTrace();
-        }
-      });
-      outStream.close();
-    } catch (IOException err) {
-      err.printStackTrace();
-    }
+  public HttpStatus getCSV() {
+    Transformer transformer = new TransformerDropFields(Arrays.asList(0, 2));
+    Reader reader = new ReaderCSV("./files/sample-small.csv", transformer);
+    reader.readFile().forEach(System.out::println);
+    return HttpStatus.OK;
   }
 }
