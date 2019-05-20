@@ -1,6 +1,8 @@
 package FileParser.TransferQueue;
 
+import PubSub.Message;
+
 public interface TransferQueue {
-  void addItem(String item);
-  String getItem();
+  void addItem(Message item);
+  Message getItem();
 }

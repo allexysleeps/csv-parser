@@ -10,6 +10,10 @@ public class PublisherImp implements Publisher {
     subscribers.add(sub);
   }
 
+  public void bulkSubscribe(List<Subscriber> subs) {
+    this.subscribers.addAll(subs);
+  }
+
   public void unsubscribe(Subscriber sub) {
     subscribers.remove(sub);
   }

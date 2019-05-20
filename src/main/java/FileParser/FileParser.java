@@ -3,10 +3,11 @@ package FileParser;
 import FileParser.FileReceiver.FileReceiver;
 import FileParser.Reader.Reader;
 import FileParser.Reader.ReaderCSV;
-import FileParser.Transformer.Transformer;
 import PubSub.Message;
 import PubSub.Publisher;
 import PubSub.PublisherImp;
+
+import java.util.Arrays;
 
 public class FileParser {
   private final Reader reader;
@@ -14,16 +15,11 @@ public class FileParser {
 
   public FileParser(String path) {
     this.reader = new ReaderCSV(path);
-    FileReceiver receiver = new FileReceiver();
     this.publisher = new PublisherImp();
-    this.publisher.subscribe(receiver);
-  }
-
-  public FileParser(String path, Transformer transformer) {
-    this.reader = new ReaderCSV(path, transformer);
-    this.publisher = new PublisherImp();
-    FileReceiver receiver = new FileReceiver();
-    this.publisher.subscribe(receiver);
+    this.publisher.bulkSubscribe(Arrays.asList(
+        new FileReceiver("Slow receiver", 1000),
+        new FileReceiver("Fast receiver", 300)
+    ));
   }
 
   public void parse() {

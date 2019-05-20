@@ -3,14 +3,16 @@ package FileParser.TransferQueue;
 import java.util.LinkedList;
 import java.util.Queue;
 
-public class TransferQueueImpl implements TransferQueue {
-  private Queue <String> queue = new LinkedList<>();
+import PubSub.Message;
 
-  public void addItem(String item) {
+public class TransferQueueImpl implements TransferQueue {
+  private Queue <Message> queue = new LinkedList<>();
+
+  public void addItem(Message item) {
     queue.add(item);
   }
 
-  public String getItem() {
+  public Message getItem() {
     return queue.poll();
   }
 }
