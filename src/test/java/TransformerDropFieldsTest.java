@@ -10,7 +10,7 @@ import java.util.Collections;
 
 public class TransformerDropFieldsTest {
   @Test
-  @DisplayName("TransformerDropFieldsTest test")
+  @DisplayName("TransformerDropFields test")
   public void transformTest() {
     Transformer transformer = new TransformerDropFields(Collections.singletonList(0));
     assertEquals("1;2;3", transformer.transformLine("0;1;2;3"));
