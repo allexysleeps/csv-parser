@@ -1,24 +1,25 @@
 package FileParser.FileReceiver;
 
-import FileParser.TransferQueue.TransferQueue;
-import FileParser.TransferQueue.TransferQueueImpl;
 import PubSub.Message;
 import PubSub.Subscriber;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class FileReceiver implements Subscriber {
-  private final TransferQueue queue = new TransferQueueImpl();
+  private final Queue <Message> queue = new LinkedList<>();
   private final String name;
   private final int delay;
   private boolean started = false;
   private final Thread sendThread = new Thread(new Runnable() {
     @Override
     public void run() {
-      Message msg = queue.getItem();
+      Message msg = queue.poll();
       while (msg != null) {
         try {
           Thread.sleep(delay);
           System.out.println(name + ": " + msg.body);
-          msg = queue.getItem();
+          msg = queue.poll();
         } catch (InterruptedException e) {
           e.printStackTrace();
         }
@@ -26,18 +27,13 @@ public class FileReceiver implements Subscriber {
     }
   });
 
-  public FileReceiver(String name) {
-    this.name = name;
-    this.delay = 100;
-  }
   public FileReceiver(String name, int delay) {
     this.name = name;
     this.delay = delay;
   }
 
   public void update (Message msg) {
-    queue.addItem(msg);
-    System.out.println("added to queue");
+    queue.add(msg);
     if (!this.started) {
       this.started = true;
       sendThread.start();
