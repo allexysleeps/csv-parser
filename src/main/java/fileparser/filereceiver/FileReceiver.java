@@ -1,7 +1,7 @@
-package FileParser.FileReceiver;
+package fileparser.filereceiver;
 
-import PubSub.Message;
-import PubSub.Subscriber;
+import pubsub.Message;
+import pubsub.Subscriber;
 
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,9 +11,9 @@ public class FileReceiver implements Subscriber {
   private final String name;
   private final int delay;
   private boolean started = false;
-  private final Thread sendThread = new Thread(new Runnable() {
-    @Override
-    public void run() {
+
+  private void sendData() {
+    new Thread(() -> {
       Message msg = queue.poll();
       while (msg != null) {
         try {
@@ -24,8 +24,8 @@ public class FileReceiver implements Subscriber {
           e.printStackTrace();
         }
       }
-    }
-  });
+    }).start();
+  }
 
   public FileReceiver(String name, int delay) {
     this.name = name;
@@ -36,7 +36,7 @@ public class FileReceiver implements Subscriber {
     queue.add(msg);
     if (!this.started) {
       this.started = true;
-      sendThread.start();
+      sendData();
     }
   }
 }

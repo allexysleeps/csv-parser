@@ -1,12 +1,12 @@
-package FileParser.Reader;
+package fileparser.reader;
 
+import fileparser.transformer.Transformer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.stream.Stream;
-
-import FileParser.Transformer.Transformer;
 
 public class ReaderCSV implements Reader {
   private class IdentityTransformer implements Transformer {
@@ -28,15 +28,13 @@ public class ReaderCSV implements Reader {
     this.transformer = transformer;
   }
 
-  public Stream<String> readFile() {
-    Stream<String> lines;
+  public Optional<Stream<String>> readFile() {
     try {
       BufferedReader br = Files.newBufferedReader(Paths.get(this.filePath));
-      lines = br.lines().map(this.transformer::transformLine);
-    } catch(IOException e) {
+      return Optional.of(br.lines().map(this.transformer::transformLine));
+    } catch (IOException e) {
       e.printStackTrace();
-      lines = null;
+      return Optional.empty();
     }
-    return lines;
   }
 }

@@ -1,7 +1,7 @@
-import PubSub.Message;
-import PubSub.Publisher;
-import PubSub.PublisherImp;
-import PubSub.Subscriber;
+import pubsub.Message;
+import pubsub.Publisher;
+import pubsub.PublisherImp;
+import pubsub.Subscriber;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 
@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PubSubTest {
+public class PublisherTest {
   private final List<Message> mockMessages = Arrays.asList(
     new Message("message1"),
     new Message("message2"),
@@ -20,7 +20,7 @@ public class PubSubTest {
 
   @Test
   @DisplayName("PubSub single sub test")
-  public void pubSubTestSingleSub() {
+  public void publisherTestSingleSub() {
     Publisher publisher = new PublisherImp();
     final List<Message> resultList = new LinkedList<>();
     Subscriber mockSubscriber = resultList::add;
@@ -33,7 +33,7 @@ public class PubSubTest {
 
   @Test
   @DisplayName("PubSub multi subs test")
-  public void pubSubTestMultiSub() {
+  public void publisherTestMultiSub() {
     Publisher publisher = new PublisherImp();
     final List<Message> resultList1 = new LinkedList<>();
     final List<Message> resultList2 = new LinkedList<>();
@@ -50,7 +50,7 @@ public class PubSubTest {
 
   @Test
   @DisplayName("PubSub unsubscription test")
-  public void PubSubTestUnsubscription() {
+  public void publisherTestUnsubscription() {
     Publisher publisher = new PublisherImp();
     final List<Message> resultList1 = new LinkedList<>();
     final List<Message> resultList2 = new LinkedList<>();

@@ -1,6 +1,6 @@
 package Application;
 
-import FileParser.FileParser;
+import fileparser.FileParser;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,4 +1,4 @@
-package PubSub;
+package pubsub;
 
 public class Message {
   public final String body;

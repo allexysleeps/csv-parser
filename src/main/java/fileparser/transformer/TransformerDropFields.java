@@ -1,4 +1,4 @@
-package FileParser.Transformer;
+package fileparser.transformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
