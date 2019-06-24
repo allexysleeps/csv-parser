@@ -1,16 +1,19 @@
-package fileparser.filereceiver;
-
-import pubsub.Message;
-import pubsub.Subscriber;
+package fileparser;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicBoolean;
+import fileparser.Publisher.Message;
 
 public class FileReceiver implements Subscriber {
-  private final Queue <Message> queue = new LinkedList<>();
+  private final Queue <Publisher.Message> queue = new LinkedList<>();
   private final String name;
   private final int delay;
-  private boolean started = false;
+  private AtomicBoolean started = new AtomicBoolean(false);
+
+  private void printData(Message msg) {
+    System.out.println(name + ": " + msg.body);
+  }
 
   private void sendData() {
     new Thread(() -> {
@@ -18,7 +21,7 @@ public class FileReceiver implements Subscriber {
       while (msg != null) {
         try {
           Thread.sleep(delay);
-          System.out.println(name + ": " + msg.body);
+          printData(msg);
           msg = queue.poll();
         } catch (InterruptedException e) {
           e.printStackTrace();
@@ -34,8 +37,7 @@ public class FileReceiver implements Subscriber {
 
   public void update (Message msg) {
     queue.add(msg);
-    if (!this.started) {
-      this.started = true;
+    if (started.compareAndSet(false, true)) {
       sendData();
     }
   }

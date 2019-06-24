@@ -1,9 +1,9 @@
-package pubsub;
+package fileparser;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class PublisherImp implements Publisher {
+class PublisherImp implements Publisher {
   private List<Subscriber> subscribers = new LinkedList<>();
 
   public void subscribe(Subscriber sub) {
